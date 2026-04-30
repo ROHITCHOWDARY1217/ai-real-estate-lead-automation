@@ -1,0 +1,1304 @@
+{
+  "name": "Bussiness telegram automation",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1y823KMYxmQ0DifjBrJbgZM60z6CaqbI8P2ZfSE_Vg_k",
+          "mode": "list",
+          "cachedResultName": "Bussiness mail",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1y823KMYxmQ0DifjBrJbgZM60z6CaqbI8P2ZfSE_Vg_k/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "AI Real Estate Lead Dashboard",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1y823KMYxmQ0DifjBrJbgZM60z6CaqbI8P2ZfSE_Vg_k/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Code in JavaScript').item.json.id }}",
+            "From Name": "={{ $('Code in JavaScript').item.json.fromName }}",
+            "From Email": "={{ $('Code in JavaScript').item.json.fromEmail }}",
+            "To Email": "={{ $('Code in JavaScript').item.json.toEmail }}",
+            "Subject": "={{ $('Code in JavaScript').item.json.subject }}",
+            "Body": "={{ $('Code in JavaScript').item.json.body }}",
+            "Data": "={{ $('Code in JavaScript').item.json.date }}",
+            "rply": "={{ $json.aiReply }}",
+            "queryType": "={{ $json.queryType }}",
+            "priority": "={{ $json.priority }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "From Name",
+              "displayName": "From Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "From Email",
+              "displayName": "From Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "To Email",
+              "displayName": "To Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Subject",
+              "displayName": "Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Body",
+              "displayName": "Body",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Data",
+              "displayName": "Data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "rply",
+              "displayName": "rply",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "queryType",
+              "displayName": "queryType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "priority",
+              "displayName": "priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -48,
+        -272
+      ],
+      "id": "4f810eb4-7575-48c0-9c9f-254c743558fa",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "tGIjyECMmCVVVWxh",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {
+          "readStatus": "unread"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1104,
+        -272
+      ],
+      "id": "1ab2f641-1697-496e-9c61-ff62510f11dc",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vegktv2ZxwOWQFVP",
+          "name": "client Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $json;\n\n// Clean Subject (remove \"Subject: \" prefix)\nconst rawSubject = item.subject || \"\";\nconst subject = rawSubject.replace(\"Subject: \", \"\").trim();\n\n// Clean Date (remove \"Date: \" prefix)\nconst rawDate = item.date || \"\";\nconst date = rawDate.replace(\"Date: \", \"\").trim();\n\n// Get From details\nconst fromName = item.from?.value?.[0]?.name || \"\";\nconst fromEmail = item.from?.value?.[0]?.address || \"\";\n\n// Get Body\nconst body = $input.first().json.text || \"\";\n\n// Get Message ID\n// Clean Message ID (remove < and >)\nconst id = item.id || \"\";\n\n// Get To Email\nconst toEmail = item.to?.value?.[0]?.address || \"\";\n\nreturn [{\n  json: {\n    fromName,\n    fromEmail,\n    subject,\n    body,\n    date,\n    id,\n    toEmail\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -912,
+        -272
+      ],
+      "id": "ea725117-2e83-498e-b44f-452c17466a3d",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('Append row in sheet').item.json.id }}",
+        "emailType": "text",
+        "message": "={{ $('If').item.json.rply }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        -240
+      ],
+      "id": "ad063ca9-2705-476f-881c-be48f58c10bb",
+      "name": "Reply to a message",
+      "webhookId": "b0f58658-e45e-4eba-895c-68d238e706c0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vegktv2ZxwOWQFVP",
+          "name": "client Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an AI assistant for a Real Estate Agency.\n\nA potential client sent this email:\nFrom: {{ $json.fromName }}\nSubject: {{ $json.subject }}\nMessage: {{ $json.body }}\n\nDo these 3 things:\n\n1. Detect query type from these options:\n   - Property Inquiry\n   - Budget Query\n   - Site Visit Request\n   - Location Query\n   - Documentation Query\n   - Negotiation\n   - General Query\n\n2. Detect priority:\n   - High (ready to buy, urgent, site visit)\n   - Medium (inquiring, comparing)\n   - Low (just browsing)\n\n3. Write a professional, warm real estate reply that:\n   - Addresses their specific query\n   - Mentions we have properties in their area\n   - Offers a site visit\n   - Keeps it under 150 words\n   - Signs off as \"Team [Agency Name]\"\n\nReturn ONLY this JSON:\n{\n  \"queryType\": \"detected type\",\n  \"priority\": \"high/medium/low\",\n  \"reply\": \"your generated reply\"\n}",
+        "needsFallback": true,
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        -656,
+        -272
+      ],
+      "id": "a531830f-0fa3-4b41-b05e-4687f18afc03",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -736,
+        32
+      ],
+      "id": "bd114f55-6b37-479a-ab33-044234710d85",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "rMqeQLz8n5RHLgiQ",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -528,
+        32
+      ],
+      "id": "7056fefa-eec1-4576-813f-1c7f612ae4ee",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Jwm2mf43Mj2Ah3s0",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get AI raw text output\nconst rawText = $json.text;\n\n// Parse the JSON from AI response\nconst aiResponse = JSON.parse(rawText);\n\n// Return clean separated fields\nreturn [{\n  json: {\n    // Keep all previous fields\n    fromName: $json.fromName,\n    fromEmail: $json.fromEmail,\n    subject: $json.subject,\n    body: $json.body,\n    date: $json.date,\n    id: $json.id,\n    messageId: $json.messageId,\n    threadId: $json.threadId,\n\n    // New AI fields separately\n    queryType: aiResponse.queryType,\n    priority: aiResponse.priority,\n    aiReply: aiResponse.reply\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -256,
+        -272
+      ],
+      "id": "228409db-2dae-4dcc-845f-0d7a90d5f4b6",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "chatId": "7005574624",
+        "text": "=🏠 NEW REAL ESTATE LEAD!  \n👤 Name: {{ $('Code in JavaScript').item.json.fromName }} \n📧 Email: {{ $('Code in JavaScript').item.json.fromEmail }} \n📋 Query: {{ $json.queryType }} \n🎯 Priority: {{ $json.priority }} \n📝 Subject: {{ $('Code in JavaScript').item.json.subject }}  \n💬 Client Message: {{ $('Code in JavaScript').item.json.body }}  \n🤖 AI Reply Sent: {{ $json.rply }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        464,
+        -144
+      ],
+      "id": "df88549f-c503-4bd3-b605-eb96a0d4a790",
+      "name": "Send a text message",
+      "webhookId": "7cb4ea1f-10a8-42ed-b9ec-0a423bb206a7",
+      "credentials": {
+        "telegramApi": {
+          "id": "qkcsCCxZ0j4ukIWu",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "6e450bc6-9364-4727-9bca-b350bdcbfc63",
+              "leftValue": "={{ $json.priority }}",
+              "rightValue": "High",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        144,
+        -272
+      ],
+      "id": "96a69177-f615-40c7-8516-c30cf0a88052",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "chatId": "7005574624",
+        "text": "=🚨 Urgentttt \n🏠 NEW REAL ESTATE LEAD!   \n👤 Name: {{ $('Code in JavaScript').item.json.fromName }}  \n📧 Email: {{ $('Code in JavaScript').item.json.fromEmail }}  \n📋 Query: {{ $json.queryType }}  🎯 Priority: {{ $json.priority }}  \n📝 Subject: {{ $('Code in JavaScript').item.json.subject }}   \n💬 Client Message: {{ $('Code in JavaScript').item.json.body }}   \n🤖 AI Reply Sent: {{ $json.rply }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        400,
+        -384
+      ],
+      "id": "b07b9b27-3cd3-4960-98ce-8450e4af284f",
+      "name": "Send a text message1",
+      "webhookId": "66d4a8b1-4aa3-4600-9fdb-76784ba7214f",
+      "credentials": {
+        "telegramApi": {
+          "id": "qkcsCCxZ0j4ukIWu",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 1,
+        "filters": {
+          "labelIds": [
+            "INBOX"
+          ],
+          "readStatus": "unread",
+          "receivedAfter": "={{ $now.minus(2, 'minutes').toISO() }}",
+          "sender": "={{ $('Code in JavaScript1').item.json.fromEmail }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1824,
+        -240
+      ],
+      "id": "c8a44771-9b51-4957-90c6-1edf6a421103",
+      "name": "Get many messages",
+      "webhookId": "dc5a52ce-5417-497c-8229-7463633ffc58",
+      "alwaysOutputData": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vegktv2ZxwOWQFVP",
+          "name": "client Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "67df26f2-a64c-40f4-b0e7-ab6ba0e4eb3f",
+              "leftValue": "={{ $json.id ? true : false }}",
+              "rightValue": {},
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2336,
+        -240
+      ],
+      "id": "92657c92-ce65-4659-b93e-79e0eaf5997b",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('Reply to a message').item.json.threadId }}",
+        "message": "=Hi {{ $('Append row in sheet').item.json[\"From Name\"] }},  Just checking in to see if you had a chance to review our previous message.  We’d love to help you find the perfect property.  Would you like to schedule a quick call or site visit?  Best Regards, Team ABC Realty",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2656,
+        -384
+      ],
+      "id": "8bdf1e13-78a9-45e8-b3b3-f7bb312e468e",
+      "name": "Reply to a message1",
+      "webhookId": "fb65b601-f549-49a5-a304-16a076efe015",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vegktv2ZxwOWQFVP",
+          "name": "client Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1y823KMYxmQ0DifjBrJbgZM60z6CaqbI8P2ZfSE_Vg_k",
+          "mode": "list",
+          "cachedResultName": "Bussiness mail",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1y823KMYxmQ0DifjBrJbgZM60z6CaqbI8P2ZfSE_Vg_k/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "All mails",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1y823KMYxmQ0DifjBrJbgZM60z6CaqbI8P2ZfSE_Vg_k/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "Replied"
+          },
+          "matchingColumns": [
+            "status"
+          ],
+          "schema": [
+            {
+              "id": "From Name",
+              "displayName": "From Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "From Email",
+              "displayName": "From Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "To Email",
+              "displayName": "To Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Subject",
+              "displayName": "Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Body",
+              "displayName": "Body",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "rply",
+              "displayName": "rply",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "queryType",
+              "displayName": "queryType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "priority",
+              "displayName": "priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1328,
+        -240
+      ],
+      "id": "7c409874-2cb9-49c3-8d50-0e1b9896b2bf",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "tGIjyECMmCVVVWxh",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1y823KMYxmQ0DifjBrJbgZM60z6CaqbI8P2ZfSE_Vg_k",
+          "mode": "list",
+          "cachedResultName": "Bussiness mail",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1y823KMYxmQ0DifjBrJbgZM60z6CaqbI8P2ZfSE_Vg_k/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "All mails",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1y823KMYxmQ0DifjBrJbgZM60z6CaqbI8P2ZfSE_Vg_k/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "Followed up"
+          },
+          "matchingColumns": [
+            "status"
+          ],
+          "schema": [
+            {
+              "id": "From Name",
+              "displayName": "From Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "From Email",
+              "displayName": "From Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "To Email",
+              "displayName": "To Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Subject",
+              "displayName": "Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Body",
+              "displayName": "Body",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "rply",
+              "displayName": "rply",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "queryType",
+              "displayName": "queryType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "priority",
+              "displayName": "priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2912,
+        -384
+      ],
+      "id": "831d7f1a-40f5-436a-9a3c-f1d1d2480819",
+      "name": "Update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "tGIjyECMmCVVVWxh",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get all items from Get Many Messages\nconst items = $input.all();\n\n// Just take the first item only\n// Even if 2 items came, we only pass 1\nreturn [items[0]];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2080,
+        -240
+      ],
+      "id": "29667a06-b9de-4560-a65a-3dd75f3fbd13",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1072,
+        -240
+      ],
+      "id": "fbe2d535-6d95-4d21-9f7a-e62d18388b85",
+      "name": "Mark a message as read",
+      "webhookId": "b0f58658-e45e-4eba-895c-68d238e706c0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vegktv2ZxwOWQFVP",
+          "name": "client Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1584,
+        -240
+      ],
+      "id": "7899562f-b8a7-4d68-8206-83ca8fd7ca04",
+      "name": "Wait",
+      "webhookId": "95e3ece1-6f7c-472b-a6aa-caef29f43ea0"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "95283b20-d7d3-4ff4-8df8-45ab38c4d119",
+              "leftValue": "={{ $('If').item.json.queryType }}",
+              "rightValue": "Site Visit Request",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        576,
+        -384
+      ],
+      "id": "e2e425d5-28f2-44cf-905a-1b4cd2e87bfe",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('Append row in sheet').item.json.id }}",
+        "message": "=<p>Hi {{ $json.result.chat.first_name }},</p>\n\n<p>Thank you for your interest! \nWe'd love to show you the property.</p>\n\n<p>Please book your site visit below:</p>\n\n<!-- THE BUTTON -->\n<a href=\"https://calendly.com/yalavarthirohitforexperiment/property-site-visit\" \n   style=\"\n   background-color: #0056b3;\n   color: white;\n   padding: 12px 24px;\n   text-decoration: none;\n   border-radius: 6px;\n   font-size: 16px;\n   display: inline-block;\n   \">\n   📅 Book Site Visit\n</a>\n\n<p>Looking forward to meeting you!</p>\n<p>Best Regards,<br>[Agent Name]</p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        912,
+        -480
+      ],
+      "id": "8b76c3b8-d810-4098-8bf8-a7ad8d5956f0",
+      "name": "Reply to a message2",
+      "webhookId": "2ca43abb-80a0-43ad-9fe2-e129a674644b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vegktv2ZxwOWQFVP",
+          "name": "client Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1y823KMYxmQ0DifjBrJbgZM60z6CaqbI8P2ZfSE_Vg_k",
+          "mode": "list",
+          "cachedResultName": "Bussiness mail",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1y823KMYxmQ0DifjBrJbgZM60z6CaqbI8P2ZfSE_Vg_k/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "AI Real Estate Lead Dashboard",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1y823KMYxmQ0DifjBrJbgZM60z6CaqbI8P2ZfSE_Vg_k/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "Booked the slot"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "From Name",
+              "displayName": "From Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "From Email",
+              "displayName": "From Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "To Email",
+              "displayName": "To Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Subject",
+              "displayName": "Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Body",
+              "displayName": "Body",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Data",
+              "displayName": "Data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "rply",
+              "displayName": "rply",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "queryType",
+              "displayName": "queryType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "priority",
+              "displayName": "priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1120,
+        -480
+      ],
+      "id": "44fab0d7-71bf-465e-a5b4-84f631263563",
+      "name": "Update row in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "tGIjyECMmCVVVWxh",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message1": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        [
+          {
+            "node": "Reply to a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply to a message": {
+      "main": [
+        [
+          {
+            "node": "Mark a message as read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Reply to a message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Reply to a message1": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark a message as read": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Get many messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Reply to a message2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Reply to a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply to a message2": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "0327f17c-e40b-4c9c-a3ab-756726e85dee",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "08f6a8b2a3bf09e2fac4fe303b349751edd7319d864bc86b4566455bc2ca47e5"
+  },
+  "id": "dHrWpuxhrDND0PWU",
+  "tags": []
+}
